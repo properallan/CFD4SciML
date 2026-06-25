@@ -8,8 +8,8 @@ Referências relacionadas aos conceitos fundamentais do método DG.
 
 |Autores (Ano) | Título | Tipo | Contribuição | Arquivo | BibTeX |
 |---|---|---|---|---|---|
-|Cockburn & Shu (2001) |Runge-Kutta Discontinuous Galerkin Methods |Artigo | Apresenta a formulação RKDG e aplicações em leis de conservação. | [PDF](./Cockburn2001.pdf)| [articles.bib](../references/articles.bib) |
-
+|Cockburn & Shu (2001) |Runge-Kutta discontinuous Galerkin methods for convection-dominated problems |Artigo | Apresenta a formulação RKDG e aplicações em leis de conservação. | [PDF](./Cockburn2001.pdf)| [articles.bib](../references/articles.bib) |  
+|Gottlieb & Shu (1998) |TOTAL VARIATION DIMINISHING RUNGE-KUTTA SCHEMES |Artigo | Apresenta a formulação TVD Runge-Kutta. | [PDF](./Got.pdf)| [articles.bib](../references/articles.bib) |
 ---
 
 ## Para estudar
