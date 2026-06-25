@@ -11,7 +11,7 @@ Os arquivos das referências estão separadas por tópicos:
 
 | Pasta | Conteúdo |
 |---|---|
-| Fundamentals | Formulação básica, análise e teoria |
+| [Fundamentals](./Fundamentals) | Formulação básica, análise e teoria |
 | Numerical Fluxes | Fluxos numéricos e estabilização |
 | Applications | Aplicações diversas |
 
@@ -27,12 +27,12 @@ Os BibTeX de cada referência estão disponíveis em:
 
 ---
 
-# Artigos disponíveis
+# Artigos 
+Aqui estão listados todos os artigos do repositório, para acessá-los consulte a pasta referente
 
-| Referência | Tema | Arquivo | Observação |
+| Referência | Tema | Arquivo | Pasta |
 |---|---|---|---|
-| Cockburn & Shu (2001) | RKDG | PDF | Fundamentos |
-| Arnold et al. (2002) | Análise DG | PDF | Revisão matemática |
+| Cockburn & Shu (2001) | RKDG | PDF | [Fundamentals](./Fundamentals) |
 
 ---
 
