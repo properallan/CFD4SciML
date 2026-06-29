@@ -2,6 +2,9 @@
 
 Abaixo segue a descrição do que você encontrará em cada notebook.
 
+[Aula 00 - Introdução e Motivações ao Método Galerkin Descontínuo 1D]() (*Em breve*)  
+O ponto de partida da jornada para construir um solver "do zero" em aproximadamente 14 semanas. Esta introdução explora o porquê de utilizar o DG, apresentando-o como o filho do Método dos Elementos Finitos (MEF) com os Volumes Finitos (VF). O material destaca as vantagens do método, como a independência dos elementos e a capacidade natural de lidar com geometrias complexas e condições de contorno, além de demonstrar o poder da sua convergência exponencial. Também oferece um panorama dos problemas 1D que serão solucionados ao longo do curso, incluindo Advecção linear, Burgers (viscoso e não-viscoso) e o Traffic Model.
+
 [Aula 01 - Polinômios de Jacobi e suas Derivadas](https://github.com/properallan/CFD4SciML/blob/main/DG/Lessons/01_JacobiPolynomials.ipynb)  
 Construção da base espectral. Explora a formulação matemática da EDO de Jacobi, derivando as famosas famílias de Legendre e Chebyshev, e implementa a avaliação computacional rápida via relações de recorrência.
 
