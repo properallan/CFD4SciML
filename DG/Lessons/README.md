@@ -17,7 +17,7 @@ Quadratura utilizando Polinômios e Derivadas de Jacobi. Uso do Método de Newto
 [Aula 04 - Matriz de Diferenciação via Vandermonde](https://github.com/properallan/CFD4SciML/blob/main/DG/Lessons/04_MatrizDifer_Vandermonde.ipynb) (**Disponível**)  
 Matriz de Vandermonde Tradicional e Generalizada; Base de Legendre e Pontos de Gauss-Lobatto; Condicionamento de Matrizes; Matriz de Diferenciação via Vandermonde.
 
-[Aula 05 - Matriz de Diferenciação via Polinômios de Jacobi]() (*Em breve*)  
+[Aula 05 - Matriz de Diferenciação via Polinômios de Jacobi](https://github.com/properallan/CFD4SciML/blob/main/DG/Lessons/05_MatrizDifer_Colocacao.ipynb) (**Disponível**)  
 Demonstrações para a matriz de Diferenciação via Jacobi (Matriz de Colocação) para pontos de Gauss-Legendre e Gauss-Lobatto.
 
 [Aula 06 - Matriz de Rigidez]() (*Em breve*)
