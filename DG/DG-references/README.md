@@ -7,46 +7,38 @@ O objetivo é manter uma base organizada de referências para estudo, desenvolvi
 ---
 
 ## Organização
-Os arquivos das referências estão separadas por tópicos:
+Os arquivos estão disponíveis na pasta [Fundamentals](./Fundamentals) e são organizados em subpastas de acordo com seu tópico, no momento o acervo contém:
 
-| Pasta | Conteúdo |
-|---|---|
-| [Fundamentals](./Fundamentals) | Formulação básica, análise e teoria |
-| Numerical Fluxes | Fluxos numéricos e estabilização |
-| Applications | Aplicações diversas |
+📂 Fundamentals  
+|--- 📁 Aplicacoes  
+|--- 📁 Introductions_and_Reviews  
+|--- 📁 RKSSP  
+|--- 📁 Solvers  
+|--- 📁 Shock
+
+**Nota:** Devido a limitações de tamanho, os livros não serão adicionados ao repositório, porém ficarão indicados para: leitura, obtenção e/ou referência.
 
 ---
 
 # Referências BibTeX
 
-Os BibTeX de cada referência estão disponíveis em:
+Os BibTeX de cada referência podem ser acessados na pasta [references](./references) ou de maneira mais direta por tipo de arquivo:
 
 - [Artigos](./references/articles.bib)
 - [Livros](./references/books.bib)
-- [Teses](./references/theses.bib)
-
----
-
-# Artigos 
-Aqui estão listados todos os artigos do repositório, para acessá-los consulte a pasta referente
-
-| Referência | Tema | Arquivo | Pasta |
-|---|---|---|---|
-| Cockburn & Shu (2001) | RKDG | PDF | [Fundamentals](./Fundamentals) |
+- [Teses](./references/theses.bib) (*ainda não disponível*)
 
 ---
 
 # Referências para obter
 
-## Livros
-
-- Hesthaven & Warburton (2008)
-- Di Pietro & Ern (2012)
-
 ## Artigos
 
-- Artigo X
-- Artigo Y
+-
+
+## Livros
+
+- Di Pietro & Ern (2012)
 
 ---
 
