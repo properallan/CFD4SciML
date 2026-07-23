@@ -20,13 +20,14 @@ Matriz de Vandermonde Tradicional e Generalizada; Base de Legendre e Pontos de G
 [Aula 05 - Matriz de Diferenciação via Polinômios de Jacobi](https://github.com/properallan/CFD4SciML/blob/main/DG/Lessons/05_MatrizDifer_Colocacao.ipynb) (**Disponível**)  
 Demonstrações para a matriz de Diferenciação via Jacobi (Matriz de Colocação) para pontos de Gauss-Legendre e Gauss-Lobatto.
 
-[Aula 06 - Matriz de Rigidez]() (*Em breve*)
+[Aula 06 - Fundamentos Geométricos e Matrizes do DG](https://github.com/properallan/CFD4SciML/blob/main/DG/Lessons/06_Stiffness_Matrix.ipynb) (**Disponível**)  
+Nesta aula são apresentadas peças fundamentais para o DG1D. É feito o desenvolvimento teórico e os códigos associados a: Malha 1D, Jacobiano, Base Polinomial de Legendre, Matrizes de Massa, Rigidez e Elevação (*Lift Matrices*) 
 
 [Aula 07 - Fluxos Numéricos - Parte 1]() (*Em breve*)
 
 [Aula 08 - Fluxos Numéricos - Parte 2]() (*Em breve*)
 
-[Aula 09 - Matriz Jacobiana e Condições Iniciais]() (*Em breve*)
+[Aula 09 - Condições Iniciais]() (*Em breve*)
 
 [Aula 10 - Construção do Operador Lh]() (*Em breve*)
 
