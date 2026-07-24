@@ -29,6 +29,34 @@ def MeshGen1D(K: int, xmin: float = 0.0, xmax: float = 1.0):
 
     return Nv, VX, EToV
 
+import numpy as np
+
+def LegendreBasis(P: int, xi: np.ndarray) -> np.ndarray:
+    """
+    Constrói a matriz de avaliação da base ortogonal de Legendre.
+
+    Parâmetros:
+        P (int): Grau máximo do Polinômio Aproximador.
+        xi (array): Vetor com os pontos (coordenadas) a serem avaliados.
+
+    Retorna:
+        Lj (ndarray): Matriz (npts, P+1) contendo as funções de base de 
+                      grau 0 a P avaliadas nos pontos xi.
+    """
+    Q = P + 1        # Número total de funções de base
+    npts = len(xi)   # Número de pontos de avaliação
+    
+    # Aloca a matriz para armazenar a base de Legendre
+    Lj = np.zeros((npts, Q)) 
+    
+    # Avaliação da base de Legendre (alpha=0, beta=0)
+    for j in range(Q):          # Itera sobre o grau do polinômio (0 até P)
+        for i in range(npts):   # Itera sobre os pontos da quadratura
+            Lj[i, j] = JacobiP(xi[i], j, 0, 0)
+            
+    return Lj
+
+
 def Jacobian(xi: np.ndarray, VX: np.ndarray):
     """
     Computes the Jacobian and maps quadrature points from the
@@ -170,3 +198,94 @@ def ModifStiffMatrix(psi,Dpsi,wi,Nldof,Frk,Flk,epst, epsb, type_form='Warburton'
 
     else:
         raise ValueError("Modelo de matriz modificada não reconhecido! Escolha 'Warburton' ou 'Persson'.")
+
+import numpy as np
+
+def FluxProjection(ut_list: list, FluxFunc: callable, nlpsi: np.ndarray, nlwi: np.ndarray, InvM: np.ndarray,):
+    """
+    Projeta o fluxo físico no espaço modal através de uma projeção L2.
+
+    Esta implementação é genérica e suporta um número arbitrário de
+    equações (Burgers, Euler, Navier-Stokes, etc.).
+
+    Parâmetros
+    ----------
+    ut_list : list of ndarray
+        Lista contendo as variáveis conservativas. Cada array deve possuir
+        formato (Nldof, K+2) ou (Nldof, K+2, nstage).
+
+    FluxFunc : callable
+        Função responsável por calcular os fluxos físicos.
+
+        Exemplos
+        --------
+        Burgers:
+            FluxFunc(u) -> f
+
+        Euler:
+            FluxFunc(rho, rhou, E) -> (f1, f2, f3)
+
+    nlpsi : ndarray
+        Base modal avaliada nos pontos da quadratura de superintegração.
+
+    nlwi : ndarray
+        Pesos da quadratura de superintegração.
+
+    InvM : ndarray
+        Diagonal inversa da matriz de massa.
+
+    Retorna
+    -------
+    ndarray ou list(ndarray)
+
+        Burgers:
+            fhat
+
+        Sistemas:
+            [fhat1, fhat2, ...]
+    """
+
+    # Remove células fantasmas (ghost cells)
+    uhat_list = []
+
+    for ut in ut_list:
+
+        if ut.ndim == 3:
+            uhat = ut[:, 1:-1, 0]
+        elif ut.ndim == 2:
+            uhat = ut[:, 1:-1]
+        else:
+            raise ValueError(
+                "Cada variável deve possuir dimensão 2 ou 3."
+            )
+
+        uhat_list.append(uhat)
+
+    uh_list = [nlpsi @ uhat for uhat in uhat_list]   # Reconstrução da solução física
+    fh_list = FluxFunc(*uh_list)   # Avaliação dos fluxos físicos
+
+    # Burgers retorna apenas um array
+    if not isinstance(fh_list, (list, tuple)):
+        fh_list = [fh_list]
+
+    # Verificação de consistência
+    if len(fh_list) != len(uh_list):
+        raise ValueError(
+            f"FluxFunc retornou {len(fh_list)} fluxo(s), "
+            f"mas existem {len(uh_list)} variável(is)."
+        )
+
+    # Projeção L2
+    ProjectionMatrix = nlwi * nlpsi.T
+    fhat_list = []
+
+    for fh in fh_list:
+        b = ProjectionMatrix @ fh
+        fhat = (InvM * b.T).T
+        fhat_list.append(fhat)
+
+    # Compatibilidade com problemas escalares
+    if len(fhat_list) == 1:
+        return fhat_list[0]
+
+    return fhat_list
