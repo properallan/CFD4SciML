@@ -57,7 +57,7 @@ def LegendreBasis(P: int, xi: np.ndarray) -> np.ndarray:
     return Lj
 
 
-def Jacobian(xi: np.ndarray, VX: np.ndarray):
+def Jacobian(xi: np.ndarray, VX: np.ndarray) -> np.ndarray:
     """
     Computes the Jacobian and maps quadrature points from the
     reference element [-1,1] to every physical element.
@@ -82,7 +82,8 @@ def Jacobian(xi: np.ndarray, VX: np.ndarray):
 
     return xcoord, J
 
-def MassMatrix(Nldof: int, method: str = 'analytic', wi: np.ndarray = None, psi: np.ndarray = None):
+def MassMatrix(Nldof: int, 
+               method: str = 'analytic', wi: np.ndarray = None, psi: np.ndarray = None) -> np.ndarray:
     """
     Constrói a diagonal da Matriz de Massa e sua respectiva Inversa.
     
@@ -120,7 +121,7 @@ def MassMatrix(Nldof: int, method: str = 'analytic', wi: np.ndarray = None, psi:
         
     return diagM, invDiagM
 
-def StiffMatrix(wi,phi,Dphi):
+def StiffMatrix(phi: np.ndarray, Dphi: np.ndarray, wi: np.ndarray) -> np.ndarray:
     """
     Matriz de Rigidez (Advecção)
 
@@ -169,37 +170,73 @@ def LiftMatrix(Nldof: int):
     
     return Flk, Frk, Flkp1, Frkm1
 
-def ModifStiffMatrix(psi,Dpsi,wi,Nldof,Frk,Flk,epst, epsb, type_form='Warburton'):
+def ModifStiffMatrix(psi: np.ndarray, Dpsi: np.ndarray, wi: np.ndarray, epst: np.ndarray,
+    type_form: str = 'Warburton',
+    Frk: np.ndarray = None,
+    Flk: np.ndarray = None,
+    epsb: np.ndarray = None
+) -> tuple:
     """
     Calcula a Matriz de Rigidez Modificada para o termo difusivo.
 
     Parâmetros:
-      type_form: 'Warburton' (Simétrica, retorna Ssq1 e Ssq2)
-                 'Persson'   (Assimétrica, retorna Ssq1 e None)
+    ----------
+    psi : np.ndarray  
+        Matriz com as funções de base avaliadas nos pontos de quadratura.
+    Dpsi : np.ndarray
+        Matriz com as derivadas das funções de base avaliadas nos pontos de quadratura.
+    wi : np.ndarray
+        Vetor contendo os pesos da quadratura escolhida.
+    epst : np.ndarray
+        Vetor contendo a viscosidade avaliada nos pontos internos do volume do elemento.
+    type_form : str, opcional
+        Define a formulação matemática a ser utilizada:
+        - 'Warburton' (padrão): Abordagem Simétrica (Hesthaven-Warburton). Retorna Ssq1 e Ssq2.
+        - 'Persson': Abordagem Assimétrica (Persson-Peraire). Retorna Ssq1 e None.
+    Frk : np.ndarray, opcional
+        Lift Matrix da face direita (Face Right k). Obrigatório se type_form='Warburton'.
+    Flk : np.ndarray, opcional
+        Lift Matrix da face esquerda (Face Left k). Obrigatório se type_form='Warburton'.
+    epsb : np.ndarray, opcional
+        Vetor contendo a viscosidade avaliada estritamente nas fronteiras do elemento. 
+        Obrigatório se type_form='Warburton'.
+
+    Retorna:
+    -------
+    tuple
+        Uma tupla contendo as matrizes de rigidez modificadas transpostas:
+        (Ssq1.T, Ssq2.T) para 'Warburton' ou (Ssq1.T, None) para 'Persson'.
     """
-    Ssq1 = np.zeros((Nldof, Nldof))
-
+    
     if type_form == 'Warburton':
-        # Abordagem Simétrica (Hesthaven-Warburton)
-        Ssq1 = np.dot(np.sqrt(epst)*wi*psi.T, Dpsi)
+        # Trava de segurança para garantir que os operadores de fronteira foram fornecidos
+        if Frk is None or Flk is None or epsb is None:
+            raise ValueError(
+                "Erro: Para a abordagem 'Warburton', os argumentos 'Frk', 'Flk' e 'epsb' "
+                "não podem ser vazios."
+            )
 
-        # Termo de fronteira para Ssq2
-        Boundterm = (np.sqrt(epsb[-1])*Frk - np.sqrt(epsb[0])*Flk)
+        # Abordagem Simétrica (Hesthaven-Warburton)
+        Ssq1 = np.dot(np.sqrt(epst) * wi * psi.T, Dpsi)
+
+        # Termo de fronteira acoplado aos Liftings para construção de Ssq2
+        Boundterm = (np.sqrt(epsb[-1]) * Frk) - (np.sqrt(epsb[0]) * Flk)
         Ssq2 = Boundterm - Ssq1.T
 
         return Ssq1.T, Ssq2.T
 
     elif type_form == 'Persson':
         # Abordagem Assimétrica (Persson-Peraire)
-        Ssq1 = np.dot(epst*wi*psi.T, Dpsi)
+        # O modelo de Persson absorve toda a viscosidade sem quebra simétrica
+        Ssq1 = np.dot(epst * wi * psi.T, Dpsi)
 
-        # Persson não precisa de uma segunda matriz modificada
+        # Retorna Ssq1 e dispensa a necessidade de uma segunda matriz
         return Ssq1.T, None
 
     else:
         raise ValueError("Modelo de matriz modificada não reconhecido! Escolha 'Warburton' ou 'Persson'.")
 
-import numpy as np
+
 
 def FluxProjection(ut_list: list, FluxFunc: callable, nlpsi: np.ndarray, nlwi: np.ndarray, InvM: np.ndarray,):
     """
@@ -213,24 +250,12 @@ def FluxProjection(ut_list: list, FluxFunc: callable, nlpsi: np.ndarray, nlwi: n
     ut_list : list of ndarray
         Lista contendo as variáveis conservativas. Cada array deve possuir
         formato (Nldof, K+2) ou (Nldof, K+2, nstage).
-
     FluxFunc : callable
         Função responsável por calcular os fluxos físicos.
-
-        Exemplos
-        --------
-        Burgers:
-            FluxFunc(u) -> f
-
-        Euler:
-            FluxFunc(rho, rhou, E) -> (f1, f2, f3)
-
     nlpsi : ndarray
         Base modal avaliada nos pontos da quadratura de superintegração.
-
     nlwi : ndarray
         Pesos da quadratura de superintegração.
-
     InvM : ndarray
         Diagonal inversa da matriz de massa.
 
@@ -281,7 +306,7 @@ def FluxProjection(ut_list: list, FluxFunc: callable, nlpsi: np.ndarray, nlwi: n
 
     for fh in fh_list:
         b = ProjectionMatrix @ fh
-        fhat = (InvM * b.T).T
+        fhat = InvM[:, None] * b
         fhat_list.append(fhat)
 
     # Compatibilidade com problemas escalares
