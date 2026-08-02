@@ -26,7 +26,8 @@ Nesta aula são apresentadas peças fundamentais para o DG1D. É feito o desenvo
 [Aula 07 - Projeção de Fluxos](https://github.com/properallan/CFD4SciML/blob/main/DG/Lessons/07_FluxProjection.ipynb) (**Disponível**)  
 Apresentação da estratégia de Projeção dos Fluxos e super-integração para evitar erros de *aliasing*.
 
-[Aula 08 - Fluxos Numéricos]() (*Em breve*)
+[Aula 08 - Fluxos Numéricos](https://github.com/properallan/CFD4SciML/blob/main/DG/Lessons/08_Fluxos_Numericos.ipynb) (**Disponível**)  
+Nesta aula é explicado como é feito o tratamento dos termos nas fronteira com o uso de estratégias de Fluxo Numéricos tanto para casos Convectivos quanto Difusivos.
 
 [Aula 09 - Condições Iniciais e de Contorno]() (*Em breve*)
 
