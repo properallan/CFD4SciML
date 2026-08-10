@@ -33,3 +33,18 @@ def br1_flux(space, field, epst):
     )
     
     return flux_num
+
+import numpy as np
+
+def rusanov(space, ut, ft, C_local):
+    """
+    Calcula os fluxos numéricos com estabilização local (Rusanov / Local Lax-Friedrichs).
+    'C_local' deve ser um vetor 1D de tamanho (K+1) com as velocidades em cada interface.
+    """
+    flux_num = (
+        - 0.5 * (np.dot(space.Flkp1, ft[:, 2:]) - C_local[1:] * np.dot(space.Flkp1, ut[:, 2:]))
+        - 0.5 * (np.dot(space.Frk,   ft[:, 1:-1]) + C_local[1:] * np.dot(space.Frk,   ut[:, 1:-1]))
+        + 0.5 * (np.dot(space.Frkm1, ft[:, :-2]) + C_local[:-1] * np.dot(space.Frkm1, ut[:, :-2]))
+        + 0.5 * (np.dot(space.Flk,   ft[:, 1:-1]) - C_local[:-1] * np.dot(space.Flk,   ut[:, 1:-1]))
+    )
+    return flux_num
