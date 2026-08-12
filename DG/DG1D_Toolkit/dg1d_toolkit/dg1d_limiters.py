@@ -48,6 +48,8 @@ class HierarchicalLimiter:
         vkp1 = np.zeros(self.space.K)
         vkp1[0:-2] = v[1:-1]
         vkp1[-1] = v[-1]
+        # vkp1[:-1] = v[1:]
+        # vkp1[-1] = v[-1]
 
         # Reconstrução e detecção
         ve1 = vk - minmod(np.array([vk - ue1, vk - vkm1, vkp1 - vk]))

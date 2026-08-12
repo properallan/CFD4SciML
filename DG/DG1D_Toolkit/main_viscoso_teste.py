@@ -8,7 +8,7 @@ import math
 # -----------------------------------------------------------------------------
 # IMPORTAÇÕES DA NOSSA TOOLKIT VALIDADA
 # -----------------------------------------------------------------------------
-from dg1d_core import DGSpace1D
+from dg1d_toolkit.dg1d_core import DGSpace1D
 from dg1d_toolkit.operators import FluxProjection
 from dg1d_toolkit.dg1d_integrators import RKSSP104_Step
 
